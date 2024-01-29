@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: authenticationdb
+    ports:
+      - 5435:5435
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  authentication:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
