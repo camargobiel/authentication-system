@@ -1,6 +1,6 @@
-import { type AccountEntity } from '@/entities'
+import { type AccountEntity } from '@/domain'
 import { type PrismaClient } from '@prisma/client'
-import { type CreateAccountParamsDTO } from './dtos'
+import { type FindAccountByUniquesDTO, type CreateAccountParamsDTO } from './dtos'
 
 export class AccountsRepository {
   private readonly prisma: PrismaClient
@@ -9,8 +9,20 @@ export class AccountsRepository {
     this.prisma = prisma
   }
 
+  async findAccountByUniques ({
+    id,
+    email
+  }: FindAccountByUniquesDTO): Promise<AccountEntity | null> {
+    return await this.prisma.account.findUnique({
+      where: {
+        id,
+        email
+      }
+    })
+  }
+
   async createAccount (account: CreateAccountParamsDTO): Promise<AccountEntity> {
-    return this.prisma.account.create({
+    return await this.prisma.account.create({
       data: {
         ...account
       }
