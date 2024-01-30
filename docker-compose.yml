@@ -12,6 +12,7 @@ services:
       - 5435:5435
     volumes:
       - ./data:/var/lib/postgresql/data
+    command: -p 5435
 
   authentication:
     build:

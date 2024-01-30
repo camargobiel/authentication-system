@@ -1,11 +1,15 @@
 import { type Request, type Response } from 'express'
 import { type CreateAccountControllerParamsDTO } from './dtos'
+import { type AccountsRepository } from '@/infra'
 
 export class AccountsController {
-  createAccount (request: Request, response: Response): Response {
-    const params: CreateAccountControllerParamsDTO = request.body
-    console.log('params', params)
+  constructor (
+    private readonly accountsRepository: AccountsRepository
+  ) {}
 
-    return response.status(201).json({ message: 'Account created' })
+  async createAccount (request: Request, response: Response): Promise<void> {
+    const params: CreateAccountControllerParamsDTO = request.body
+    const result = await this.accountsRepository.createAccount(params)
+    response.status(201).json(result)
   }
 }

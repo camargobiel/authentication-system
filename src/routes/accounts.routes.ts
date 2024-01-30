@@ -1,15 +1,13 @@
-import { AccountsController } from '@/controllers/accounts.controller'
+import { makeAccountsController } from '@/infra/factories'
 import { Router } from 'express'
 
 const accountsRouter = Router()
 
-const accountsController = new AccountsController()
+const accountsController = makeAccountsController()
 
 accountsRouter.post(
   '/accounts',
-  (request, response) => (
-    accountsController.createAccount(request, response)
-  )
+  accountsController.createAccount.bind(accountsController)
 )
 
 export default accountsRouter

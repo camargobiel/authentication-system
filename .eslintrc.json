@@ -9,5 +9,7 @@
         "sourceType": "module"
     },
     "rules": {
+      "indent": ["error", 2],
+      "@typescript-eslint/no-misused-promises": "off"
     }
 }
