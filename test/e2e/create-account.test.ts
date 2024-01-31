@@ -1,5 +1,5 @@
 import app from '@/app'
-import { CONFLICT, CREATED } from '@/domain'
+import { statusCodeConstants } from '@/domain'
 import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
 
@@ -17,7 +17,7 @@ describe('Create account e2e suites', () => {
           email: 'noetihu@carespin.mq',
           password: '123456'
         })
-      expect(response.status).toBe(CREATED)
+      expect(response.status).toBe(statusCodeConstants.CREATED)
     })
   })
 
@@ -30,8 +30,8 @@ describe('Create account e2e suites', () => {
           email: 'geosumel@zugudsew.fk',
           password: '123456'
         })
-      expect(response.status).toBe(CONFLICT)
-      expect(response.body.code).toBe('USER_ALREADY_EXISTS')
+      expect(response.status).toBe(statusCodeConstants.CONFLICT)
+      expect(response.body.code).toBe('ACCOUNT_ALREADY_EXISTS')
     })
   })
 })

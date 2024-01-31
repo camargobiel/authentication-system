@@ -1,3 +1,4 @@
+import { hashSync } from 'bcrypt'
 import prisma from '..'
 
 export const seedDatabase = async (): Promise<void> => {
@@ -7,7 +8,7 @@ export const seedDatabase = async (): Promise<void> => {
         id: '04ee5343-0dac-405f-95f1-ff9f60055805',
         name: 'Chester Williams',
         email: 'geosumel@zugudsew.fk',
-        password: '123456'
+        password: hashSync('123456', 10)
       },
       {
         id: 'd35378b5-8ee1-4537-93ce-064586f6a456',

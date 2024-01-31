@@ -1,11 +1,11 @@
 import { AppError } from '@/utils'
-import { CONFLICT } from '../constants'
+import { statusCodeConstants } from '../constants'
 
-export class UserAlreadyExists extends AppError {
+export class AccountAlreadyExistsError extends AppError {
   constructor () {
     super({
-      code: 'USER_ALREADY_EXISTS',
-      statusCode: CONFLICT
+      code: 'ACCOUNT_ALREADY_EXISTS',
+      statusCode: statusCodeConstants.CONFLICT
     })
   }
 }

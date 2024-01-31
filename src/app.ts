@@ -5,6 +5,6 @@ const app = express()
 
 app.use(express.json())
 
-app.use('/v1', routes.accountsRouter)
+app.use('/v1', [...Object.values(routes)])
 
 export default app
