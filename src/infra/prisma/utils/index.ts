@@ -1,1 +1,2 @@
-export * from './reset-database'
+export * from './prepare-database'
+export * from './seed-database'

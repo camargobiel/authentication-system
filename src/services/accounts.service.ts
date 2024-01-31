@@ -2,6 +2,7 @@ import { type AccountsRepository } from '@/infra'
 import { type FindAccountByUniquesDTO, type CreateAccountDTO } from './dtos'
 import { type AccountEntity } from '@/domain'
 import { UserAlreadyExists } from '@/domain'
+import { hash } from 'bcrypt'
 
 export class AccountsService {
   constructor (
@@ -21,10 +22,11 @@ export class AccountsService {
     if (user !== null) {
       throw new UserAlreadyExists()
     }
+    const hashedPassword = await hash(password, 10)
     return await this.accountsRepository.createAccount({
       email,
       name,
-      password
+      password: hashedPassword
     })
   }
 }
