@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { type CreateAccountControllerParamsDTO } from './dtos'
 import { type AccountsService } from '@/services'
-import { type AppError } from '@/utils'
+import { AppError } from '@/utils'
 import { statusCodeConstants } from '@/domain'
 
 export class AccountsController {
@@ -14,8 +14,9 @@ export class AccountsController {
     try {
       const result = await this.accountsService.createAccount(params)
       response.status(statusCodeConstants.CREATED).json(result)
-    } catch (error) {
-      const { statusCode, code } = error as AppError
+    } catch (err) {
+      if (!(err instanceof AppError)) throw err
+      const { statusCode, code } = err
       response.status(statusCode).json({ code })
     }
   }

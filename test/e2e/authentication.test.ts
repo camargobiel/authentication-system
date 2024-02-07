@@ -2,7 +2,7 @@ import request from 'supertest'
 import app from '@/app'
 import { statusCodeConstants } from '@/domain'
 
-describe('Authentication suites', () => {
+describe('Authentication e2e suites', () => {
   describe('Success', () => {
     it('should return a valid token', async () => {
       const response = await request(app)

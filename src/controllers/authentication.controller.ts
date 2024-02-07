@@ -17,9 +17,9 @@ export class AuthenticationController {
         password
       })
       response.status(statusCodeConstants.OK).json({ token, account })
-    } catch (error) {
-      if (!(error instanceof AppError)) throw error
-      const { code, statusCode } = error
+    } catch (err) {
+      if (!(err instanceof AppError)) throw err
+      const { code, statusCode } = err
       response.status(statusCode).json({ code })
     }
   }
