@@ -24,4 +24,26 @@ describe('Authentication e2e suites', () => {
       })
     })
   })
+
+  describe('Errors', () => {
+    it('should return not found if send an invalid email', async () => {
+      const response = await request(app)
+        .post('/v1/authentication')
+        .send({
+          email: 'dontexist@zugudsew.fk',
+          password: '1234567'
+        })
+      expect(response.status).toBe(statusCodeConstants.NOT_FOUND)
+    })
+
+    it('should return bad request if send an invalid password', async () => {
+      const response = await request(app)
+        .post('/v1/authentication')
+        .send({
+          email: 'geosumel@zugudsew.fk',
+          password: '1234567'
+        })
+      expect(response.status).toBe(statusCodeConstants.BAD_REQUEST)
+    })
+  })
 })

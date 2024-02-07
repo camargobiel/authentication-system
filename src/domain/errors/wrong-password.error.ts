@@ -5,7 +5,7 @@ export class WrongPasswordError extends AppError {
   constructor () {
     super({
       code: 'WRONG_PASSWORD',
-      statusCode: statusCodeConstants.UNAUTHORIZED
+      statusCode: statusCodeConstants.BAD_REQUEST
     })
   }
 }

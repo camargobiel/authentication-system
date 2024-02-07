@@ -1,5 +1,4 @@
-import { statusCodeConstants } from '@/domain'
-import { AppError } from '@/utils'
+import { NoAuthTokenProvidedError } from '@/domain'
 import { type NextFunction, type Request, type Response } from 'express'
 import { decode } from 'jsonwebtoken'
 
@@ -10,10 +9,7 @@ export const ensureAuthenticated = (
 ): void => {
   const bearerToken = request.headers.authorization
   if (bearerToken === undefined) {
-    throw new AppError({
-      statusCode: statusCodeConstants.UNAUTHORIZED,
-      code: 'NO_AUTH_TOKEN_PROVIDED'
-    })
+    throw new NoAuthTokenProvidedError()
   }
   const [, token] = bearerToken.split(' ')
   const account = decode(token)

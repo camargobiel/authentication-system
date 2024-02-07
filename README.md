@@ -10,3 +10,6 @@
 > If you don't have pnpm installed, you can do by running `npm i -g pnpm`
 >
 > Now, you can run `pnpm i` and `pnpm dev`
+
+## How to test it
+> Simple run `pnpm run test`
