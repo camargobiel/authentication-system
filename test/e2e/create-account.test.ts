@@ -4,7 +4,7 @@ import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
 
 describe('Create account e2e suites', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await prepareDatabase()
   })
 

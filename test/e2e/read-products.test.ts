@@ -4,7 +4,7 @@ import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
 
 describe('Read products e2e suites', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await prepareDatabase()
   })
 
@@ -46,6 +46,38 @@ describe('Read products e2e suites', () => {
           }
         ],
         page: 1,
+        totalPages: 1
+      })
+    })
+
+    it('should read all products with filter', async () => {
+      const search = 'Martin'
+      const response = await request(app)
+        .get(`/v1/products?search=${search}`)
+      expect(response.status).toBe(statusCodeConstants.OK)
+      expect(response.body).toEqual({
+        products: [
+          {
+            id: '19b1261e-267a-42ed-a802-72b87c830354',
+            createdAt: expect.any(String),
+            name: 'Martin Davidson',
+            updatedAt: expect.any(String),
+            value: 50
+          }
+        ],
+        page: 1,
+        totalPages: 1
+      })
+    })
+
+    it('should read next page', async () => {
+      const page = 2
+      const response = await request(app)
+        .get(`/v1/products?page=${page}`)
+      expect(response.status).toBe(statusCodeConstants.OK)
+      expect(response.body).toEqual({
+        products: [],
+        page: 2,
         totalPages: 1
       })
     })

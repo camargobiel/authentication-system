@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:e2e": "jest --watch --testMatch=**/e2e/*.test.ts",
+    "test:e2e": "jest --watch --runInBand --testMatch=**/e2e/*.test.ts",
     "dev": "nodemon ./src/server.ts"
   },
   "prisma": {
