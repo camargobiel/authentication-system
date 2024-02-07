@@ -2,6 +2,7 @@ import app from '@/app'
 import { statusCodeConstants } from '@/domain'
 import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
+import { AUTHENTICATED_ACCOUNT_TOKEN } from '../authenticated-account'
 
 describe('Read products e2e suites', () => {
   beforeEach(async () => {
@@ -12,7 +13,10 @@ describe('Read products e2e suites', () => {
     it('should read all products', async () => {
       const response = await request(app)
         .get('/v1/products')
-        .send()
+        .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
+          type: 'bearer'
+        })
+
       expect(response.status).toBe(statusCodeConstants.OK)
       expect(response.body).toEqual({
         products: [
@@ -54,6 +58,10 @@ describe('Read products e2e suites', () => {
       const search = 'Martin'
       const response = await request(app)
         .get(`/v1/products?search=${search}`)
+        .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
+          type: 'bearer'
+        })
+
       expect(response.status).toBe(statusCodeConstants.OK)
       expect(response.body).toEqual({
         products: [
@@ -74,12 +82,25 @@ describe('Read products e2e suites', () => {
       const page = 2
       const response = await request(app)
         .get(`/v1/products?page=${page}`)
+        .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
+          type: 'bearer'
+        })
+
       expect(response.status).toBe(statusCodeConstants.OK)
       expect(response.body).toEqual({
         products: [],
         page: 2,
         totalPages: 1
       })
+    })
+  })
+
+  describe('Errors', () => {
+    it('should receive unauthorized if not send auth token', async () => {
+      const response = await request(app)
+        .get('/v1/products')
+
+      expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)
     })
   })
 })
