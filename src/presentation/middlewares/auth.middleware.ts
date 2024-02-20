@@ -11,6 +11,10 @@ export const ensureAuthenticated = (
   if (bearerToken === undefined) {
     throw new NoAuthTokenProvidedError()
   }
+  const refreshToken = request.headers.refresh
+  if (refreshToken === undefined) {
+    throw new NoAuthTokenProvidedError()
+  }
   const [, token] = bearerToken.split(' ')
   const account = decode(token)
   request.account = account as Request['account']

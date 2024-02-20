@@ -10,4 +10,9 @@ authenticationRoutes.post(
   authenticationController.authenticate.bind(authenticationController)
 )
 
+authenticationRoutes.post(
+  '/reauthenticate',
+  authenticationController.reauthenticate.bind(authenticationController)
+)
+
 export default authenticationRoutes

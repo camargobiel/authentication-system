@@ -2,7 +2,7 @@ import app from '@/app'
 import { statusCodeConstants } from '@/domain'
 import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
-import { AUTHENTICATED_ACCOUNT_TOKEN } from '../authenticated-account'
+import { AUTHENTICATED_ACCOUNT_REFRESH_TOKEN, AUTHENTICATED_ACCOUNT_TOKEN } from '../authenticated-account'
 
 describe('Read products e2e suites', () => {
   beforeEach(async () => {
@@ -13,6 +13,7 @@ describe('Read products e2e suites', () => {
     it('should read all products', async () => {
       const response = await request(app)
         .get('/v1/products')
+        .set('refresh', AUTHENTICATED_ACCOUNT_REFRESH_TOKEN)
         .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
           type: 'bearer'
         })
@@ -58,6 +59,7 @@ describe('Read products e2e suites', () => {
       const search = 'Martin'
       const response = await request(app)
         .get(`/v1/products?search=${search}`)
+        .set('refresh', AUTHENTICATED_ACCOUNT_REFRESH_TOKEN)
         .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
           type: 'bearer'
         })
@@ -82,6 +84,7 @@ describe('Read products e2e suites', () => {
       const page = 2
       const response = await request(app)
         .get(`/v1/products?page=${page}`)
+        .set('refresh', AUTHENTICATED_ACCOUNT_REFRESH_TOKEN)
         .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
           type: 'bearer'
         })

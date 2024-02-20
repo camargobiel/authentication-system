@@ -14,6 +14,7 @@ describe('Authentication e2e suites', () => {
       expect(response.status).toBe(statusCodeConstants.OK)
       expect(response.body).toEqual({
         token: expect.any(String),
+        refreshToken: expect.any(String),
         account: {
           id: expect.any(String),
           name: expect.any(String),
