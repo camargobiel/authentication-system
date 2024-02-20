@@ -105,5 +105,25 @@ describe('Read products e2e suites', () => {
 
       expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)
     })
+
+    it('should receive unauthorized if send an refresh token in bearer authentication', async () => {
+      const response = await request(app)
+        .get('/v1/products')
+        .set('refresh', AUTHENTICATED_ACCOUNT_REFRESH_TOKEN)
+        .auth(AUTHENTICATED_ACCOUNT_REFRESH_TOKEN, {
+          type: 'bearer'
+        })
+      expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)
+    })
+
+    it('should receive unauthorized if send an token in place of a refresh token', async () => {
+      const response = await request(app)
+        .get('/v1/products')
+        .set('refresh', AUTHENTICATED_ACCOUNT_TOKEN)
+        .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
+          type: 'bearer'
+        })
+      expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)
+    })
   })
 })

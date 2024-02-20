@@ -10,7 +10,6 @@ describe('ReAuthentication e2e suites', () => {
         .post('/v1/reauthenticate')
         .set('refresh', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiIwNGVlNTM0My0wZGFjLTQwNWYtOTVmMS1mZjlmNjAwNTU4MDUiLCJpYXQiOjE3MDg0NjgzMTR9.CO-CEd5juP6LC3TXjNddyE1VZNIZj7fKZ0GBrISaYuY')
         .auth(EXPIRED_TOKEN, { type: 'bearer' })
-
       expect(response.status).toBe(statusCodeConstants.OK)
       expect(response.body).toEqual({
         token: expect.any(String),
