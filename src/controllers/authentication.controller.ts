@@ -41,4 +41,8 @@ export class AuthenticationController {
       response.status(statusCode).json({ code })
     }
   }
+
+  async googleAuthentication (request: Request, response: Response): Promise<void> {
+    response.status(200).send({})
+  }
 }

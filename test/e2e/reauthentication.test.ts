@@ -19,7 +19,8 @@ describe('ReAuthentication e2e suites', () => {
           name: expect.any(String),
           email: 'geosumel@zugudsew.fk',
           createdAt: expect.any(String),
-          updatedAt: expect.any(String)
+          updatedAt: expect.any(String),
+          googleId: null
         }
       })
     })

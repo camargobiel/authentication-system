@@ -6,7 +6,7 @@ describe('Authentication e2e suites', () => {
   describe('Success', () => {
     it('should return a valid token', async () => {
       const response = await request(app)
-        .post('/v1/authentication')
+        .post('/v1/authenticate')
         .send({
           email: 'geosumel@zugudsew.fk',
           password: '123456'
@@ -20,7 +20,8 @@ describe('Authentication e2e suites', () => {
           name: expect.any(String),
           email: 'geosumel@zugudsew.fk',
           createdAt: expect.any(String),
-          updatedAt: expect.any(String)
+          updatedAt: expect.any(String),
+          googleId: null
         }
       })
     })
@@ -29,7 +30,7 @@ describe('Authentication e2e suites', () => {
   describe('Errors', () => {
     it('should return not found if send an invalid email', async () => {
       const response = await request(app)
-        .post('/v1/authentication')
+        .post('/v1/authenticate')
         .send({
           email: 'dontexist@zugudsew.fk',
           password: '1234567'
@@ -39,7 +40,7 @@ describe('Authentication e2e suites', () => {
 
     it('should return bad request if send an invalid password', async () => {
       const response = await request(app)
-        .post('/v1/authentication')
+        .post('/v1/authenticate')
         .send({
           email: 'geosumel@zugudsew.fk',
           password: '1234567'
