@@ -1,8 +1,8 @@
+import { AUTHENTICATED_ACCOUNT_REFRESH_TOKEN, AUTHENTICATED_ACCOUNT_TOKEN } from '../authenticated-account'
 import app from '@/app'
 import { statusCodeConstants } from '@/domain'
 import { prepareDatabase } from '@/infra/prisma/utils'
 import request from 'supertest'
-import { AUTHENTICATED_ACCOUNT_REFRESH_TOKEN, AUTHENTICATED_ACCOUNT_TOKEN } from '../authenticated-account'
 
 describe('Read products e2e suites', () => {
   beforeEach(async () => {
@@ -121,6 +121,16 @@ describe('Read products e2e suites', () => {
         .get('/v1/products')
         .set('refresh', AUTHENTICATED_ACCOUNT_TOKEN)
         .auth(AUTHENTICATED_ACCOUNT_TOKEN, {
+          type: 'bearer'
+        })
+      expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)
+    })
+
+    it('should receive unauthorized if send an invalid token', async () => {
+      const response = await request(app)
+        .get('/v1/products')
+        .set('refresh', AUTHENTICATED_ACCOUNT_REFRESH_TOKEN)
+        .auth('batata', {
           type: 'bearer'
         })
       expect(response.status).toBe(statusCodeConstants.UNAUTHORIZED)

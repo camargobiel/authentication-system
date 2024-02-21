@@ -1,6 +1,6 @@
 import { type AccountsRepository } from '@/infra'
 import { type ReauthenticateParamsDTO, type ReauthenticateResponseDTO, type AuthenticateParamsDTO, type AuthenticateResponseDTO, type VerifyRefreshTokenResultDTO } from './dtos'
-import { AccountNotFoundError, TokenExpiredError, WrongPasswordError } from '@/domain'
+import { AccountNotFoundError, TokenExpiredError, WrongPasswordError } from '@/presentation'
 import { compareSync } from 'bcrypt'
 import { verify } from 'jsonwebtoken'
 import { env } from '@/env'

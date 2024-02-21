@@ -1,5 +1,5 @@
 import { AppError } from '@/utils'
-import { statusCodeConstants } from '../constants'
+import { statusCodeConstants } from '@/domain'
 
 export class AccountNotFoundError extends AppError {
   constructor () {

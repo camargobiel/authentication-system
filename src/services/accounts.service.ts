@@ -1,7 +1,7 @@
 import { type AccountsRepository } from '@/infra'
 import { type FindAccountByUniquesDTO, type CreateAccountDTO } from './dtos'
 import { type AccountEntity } from '@/domain'
-import { AccountAlreadyExistsError } from '@/domain'
+import { AccountAlreadyExistsError } from '@/presentation'
 import { hash } from 'bcrypt'
 
 export class AccountsService {

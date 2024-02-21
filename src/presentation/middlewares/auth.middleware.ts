@@ -1,6 +1,7 @@
-import { NoAuthTokenProvidedError } from '@/domain'
+import { env } from '@/env'
+import { InvalidTokenError, NoAuthTokenProvidedError } from '@/presentation'
 import { type NextFunction, type Request, type Response } from 'express'
-import { decode } from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 
 interface DecodedToken {
   accountId: string
@@ -21,10 +22,21 @@ export const ensureAuthenticated = (
     throw new NoAuthTokenProvidedError()
   }
   const [, token] = bearerToken.split(' ')
-  const { accountId, type: tokenType } = decode(token) as DecodedToken
-  if (tokenType !== 'token') throw new NoAuthTokenProvidedError()
-  const { type: refreshTokenType } = decode(refreshToken) as DecodedToken
-  if (refreshTokenType !== 'refresh') throw new NoAuthTokenProvidedError()
-  request.account = { accountId }
-  next()
+
+  try {
+    const validatedToken = verify(token, env.JWT_SECRET)
+    const validatedRefresh = verify(refreshToken, env.JWT_SECRET)
+    const { type: tokenType, accountId } = validatedToken as DecodedToken
+    if (tokenType !== 'token') {
+      throw new InvalidTokenError()
+    }
+    const refreshTokenType = (validatedRefresh as DecodedToken).type
+    if (refreshTokenType !== 'refresh') {
+      throw new InvalidTokenError()
+    }
+    request.account = { accountId }
+    next()
+  } catch (error) {
+    throw new InvalidTokenError()
+  }
 }

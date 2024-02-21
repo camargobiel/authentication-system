@@ -1,5 +1,5 @@
+import { statusCodeConstants } from '@/domain'
 import { AppError } from '@/utils'
-import { statusCodeConstants } from '../constants'
 
 export class AccountAlreadyExistsError extends AppError {
   constructor () {
