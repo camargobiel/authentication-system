@@ -14,7 +14,7 @@ authenticationRoutes.post(
 
 authenticationRoutes.get(
   '/authenticate/google',
-  googlePassportStrategy.authenticate('google', { scope: ['profile', 'email'] })
+  googlePassportStrategy.authenticate('google', { scope: ['profile', 'email'], prompt: 'select_account' })
 )
 
 authenticationRoutes.get(
