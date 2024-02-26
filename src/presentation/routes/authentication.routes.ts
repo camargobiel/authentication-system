@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { makeAuthenticationController } from '@/infra/factories'
+import { googlePassportStrategy } from '@/infra/strategies'
 import { Router } from 'express'
-import passport from 'passport'
 
 const authenticationRoutes = Router()
 
@@ -13,12 +14,12 @@ authenticationRoutes.post(
 
 authenticationRoutes.get(
   '/authenticate/google',
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  passport.authenticate('google', { scope: ['email', 'profile'] })
+  googlePassportStrategy.authenticate('google', { scope: ['profile', 'email'] })
 )
 
-authenticationRoutes.post(
-  '/authenticate/google',
+authenticationRoutes.get(
+  '/authenticate/google/callback',
+  googlePassportStrategy.authenticate('google', { session: false }),
   authenticationController.googleAuthentication.bind(authenticationController)
 )
 

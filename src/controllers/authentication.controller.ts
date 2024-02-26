@@ -1,4 +1,4 @@
-import { statusCodeConstants } from '@/domain'
+import { type GoogleUserEntity, statusCodeConstants } from '@/domain'
 import { type AuthenticationService } from '@/services'
 import { AppError } from '@/utils'
 import { type Request, type Response } from 'express'
@@ -43,6 +43,14 @@ export class AuthenticationController {
   }
 
   async googleAuthentication (request: Request, response: Response): Promise<void> {
-    response.status(200).send({})
+    try {
+      const googleUser = request.body as GoogleUserEntity
+      const { token, refreshToken, account } = await this.authenticationService.googleAuthentication({
+        googleUser
+      })
+      response.status(statusCodeConstants.OK).json({ token, refreshToken, account })
+    } catch (err) {
+      response.status(statusCodeConstants.INTERNAL_SERVER_ERROR).send(err)
+    }
   }
 }

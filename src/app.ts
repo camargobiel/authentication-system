@@ -1,6 +1,5 @@
 import express from 'express'
 import * as routes from './presentation/routes'
-import './passport'
 
 const app = express()
 

@@ -1,5 +1,5 @@
 import { type AccountsRepository } from '@/infra'
-import { type ReauthenticateParamsDTO, type ReauthenticateResponseDTO, type AuthenticateParamsDTO, type AuthenticateResponseDTO, type VerifyRefreshTokenResultDTO } from './dtos'
+import { type ReauthenticateParamsDTO, type ReauthenticateResponseDTO, type AuthenticateParamsDTO, type AuthenticateResponseDTO, type VerifyRefreshTokenResultDTO, type GoogleAuthenticationParams, type GoogleAuthenticationResult } from './dtos'
 import { AccountNotFoundError, TokenExpiredError, WrongPasswordError } from '@/presentation'
 import { compareSync } from 'bcrypt'
 import { verify } from 'jsonwebtoken'
@@ -14,6 +14,7 @@ export class AuthenticationService {
   async authenticate ({ email, password }: AuthenticateParamsDTO): Promise<AuthenticateResponseDTO> {
     const account = await this.accountsRepository.findAccountByUniques({ email })
     if (account === null) throw new AccountNotFoundError()
+    if (account.password === null) throw new AccountNotFoundError()
     const passwordMatch = compareSync(password, account.password)
     if (!passwordMatch) throw new WrongPasswordError()
     Reflect.deleteProperty(account, 'password')
@@ -39,6 +40,35 @@ export class AuthenticationService {
       }
     } catch (err) {
       throw new TokenExpiredError()
+    }
+  }
+
+  async googleAuthentication ({
+    googleUser
+  }: GoogleAuthenticationParams): Promise<GoogleAuthenticationResult> {
+    let account = await this.accountsRepository.findAccountByUniques({
+      email: googleUser._json.email
+    })
+    if (account === null) {
+      account = await this.accountsRepository.createAccount({
+        email: googleUser._json.email,
+        name: googleUser._json.name,
+        googleId: googleUser._json.sub,
+        password: null
+      })
+    }
+    if (account.googleId === null) {
+      account = await this.accountsRepository.transformAccountToGoogleAccount({
+        email: account.email,
+        googleAccountId: googleUser._json.sub
+      })
+    }
+    const token = createToken({ accountId: account.id })
+    const refreshToken = createRefreshToken({ accountId: account.id })
+    return {
+      token,
+      refreshToken,
+      account
     }
   }
 }

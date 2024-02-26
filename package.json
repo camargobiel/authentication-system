@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --runInBand",
     "test:e2e": "jest --watch --runInBand --testMatch=**/e2e/*.test.ts",
-    "dev": "nodemon ./src/server.ts"
+    "dev": "nodemon --watch"
   },
   "prisma": {
     "schema": "./src/infra/prisma/schema.prisma"
@@ -43,6 +43,7 @@
     "prisma": "^5.8.1",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   }
 }

@@ -1,6 +1,6 @@
 import { type AccountEntity } from '@/domain'
 import { type PrismaClient } from '@prisma/client'
-import { type FindAccountByUniquesDTO, type CreateAccountParamsDTO } from './dtos'
+import { type FindAccountByUniquesDTO, type CreateAccountParamsDTO, type TransformAccountToGoogleAccountParams } from './dtos'
 
 export class AccountsRepository {
   private readonly prisma: PrismaClient
@@ -25,6 +25,20 @@ export class AccountsRepository {
     return await this.prisma.account.create({
       data: {
         ...account
+      }
+    })
+  }
+
+  async transformAccountToGoogleAccount ({
+    email,
+    googleAccountId
+  }: TransformAccountToGoogleAccountParams): Promise<AccountEntity> {
+    return await this.prisma.account.update({
+      where: {
+        email
+      },
+      data: {
+        googleId: googleAccountId
       }
     })
   }

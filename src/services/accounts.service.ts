@@ -26,7 +26,8 @@ export class AccountsService {
     return await this.accountsRepository.createAccount({
       email,
       name,
-      password: hashedPassword
+      password: hashedPassword,
+      googleId: null
     })
   }
 }

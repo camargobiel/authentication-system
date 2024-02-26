@@ -8,6 +8,8 @@ passport.use(new GoogleStrategy.Strategy({
   callbackURL: 'http://localhost:5000/v1/authenticate/google/callback',
   passReqToCallback: true
 }, (request, accessToken, refreshToken, profile, done) => {
-  console.log('accessToken', accessToken)
-  done()
+  request.body = profile
+  done(null, profile)
 }))
+
+export { passport as googlePassportStrategy }
