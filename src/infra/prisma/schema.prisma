@@ -18,6 +18,7 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   googleId String?
+  githubId String?
 }
 
 model Product {

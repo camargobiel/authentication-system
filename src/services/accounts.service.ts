@@ -27,6 +27,7 @@ export class AccountsService {
       email,
       name,
       password: hashedPassword,
+      githubId: null,
       googleId: null
     })
   }

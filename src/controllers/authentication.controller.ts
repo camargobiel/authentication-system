@@ -1,4 +1,4 @@
-import { type GoogleUserEntity, statusCodeConstants } from '@/domain'
+import { type OAuthAccountEntity, statusCodeConstants } from '@/domain'
 import { type AuthenticationService } from '@/services'
 import { AppError } from '@/utils'
 import { type Request, type Response } from 'express'
@@ -44,9 +44,21 @@ export class AuthenticationController {
 
   async googleAuthentication (request: Request, response: Response): Promise<void> {
     try {
-      const googleUser = request.body as GoogleUserEntity
-      const { token, refreshToken, account } = await this.authenticationService.googleAuthentication({
-        googleUser
+      const googleUser = request.body as OAuthAccountEntity
+      const { token, refreshToken, account } = await this.authenticationService.useOAuth({
+        oauthAccount: googleUser
+      })
+      response.status(statusCodeConstants.OK).json({ token, refreshToken, account })
+    } catch (err) {
+      response.status(statusCodeConstants.INTERNAL_SERVER_ERROR).send(err)
+    }
+  }
+
+  async githubAuthentication (request: Request, response: Response): Promise<void> {
+    try {
+      const githubAccount = request.user as OAuthAccountEntity
+      const { token, refreshToken, account } = await this.authenticationService.useOAuth({
+        oauthAccount: githubAccount
       })
       response.status(statusCodeConstants.OK).json({ token, refreshToken, account })
     } catch (err) {

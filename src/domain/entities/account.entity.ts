@@ -6,4 +6,5 @@ export interface AccountEntity {
   createdAt: Date
   updatedAt: Date
   googleId: string | null
+  githubId: string | null
 }

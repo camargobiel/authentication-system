@@ -3,5 +3,9 @@ declare namespace Express {
     account: {
       accountId: string
     }
+    user: {
+      name: string
+      email: string
+    }
   }
 }

@@ -8,7 +8,11 @@ passport.use(new GoogleStrategy.Strategy({
   callbackURL: 'http://localhost:5000/v1/authenticate/google/callback',
   passReqToCallback: true
 }, (request, accessToken, refreshToken, profile, done) => {
-  request.body = profile
+  request.body = {
+    name: profile._json.name,
+    email: profile._json.email,
+    googleId: profile._json.sub
+  }
   done(null, profile)
 }))
 

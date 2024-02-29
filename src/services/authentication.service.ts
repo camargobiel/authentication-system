@@ -1,5 +1,5 @@
 import { type AccountsRepository } from '@/infra'
-import { type ReauthenticateParamsDTO, type ReauthenticateResponseDTO, type AuthenticateParamsDTO, type AuthenticateResponseDTO, type VerifyRefreshTokenResultDTO, type GoogleAuthenticationParams, type GoogleAuthenticationResult } from './dtos'
+import { type ReauthenticateParamsDTO, type ReauthenticateResponseDTO, type AuthenticateParamsDTO, type AuthenticateResponseDTO, type VerifyRefreshTokenResultDTO, type OAuthParams, type OAuthResult } from './dtos'
 import { AccountNotFoundError, TokenExpiredError, WrongPasswordError } from '@/presentation'
 import { compareSync } from 'bcrypt'
 import { verify } from 'jsonwebtoken'
@@ -43,24 +43,26 @@ export class AuthenticationService {
     }
   }
 
-  async googleAuthentication ({
-    googleUser
-  }: GoogleAuthenticationParams): Promise<GoogleAuthenticationResult> {
+  async useOAuth ({
+    oauthAccount
+  }: OAuthParams): Promise<OAuthResult> {
     let account = await this.accountsRepository.findAccountByUniques({
-      email: googleUser._json.email
+      email: oauthAccount.email
     })
     if (account === null) {
       account = await this.accountsRepository.createAccount({
-        email: googleUser._json.email,
-        name: googleUser._json.name,
-        googleId: googleUser._json.sub,
+        email: oauthAccount.email,
+        name: oauthAccount.name,
+        googleId: oauthAccount.googleId ?? null,
+        githubId: oauthAccount.githubId ?? null,
         password: null
       })
     }
-    if (account.googleId === null) {
-      account = await this.accountsRepository.transformAccountToGoogleAccount({
+    if (account.googleId === null || account.githubId === null) {
+      account = await this.accountsRepository.transformAccountToOAuthAccount({
         email: account.email,
-        googleAccountId: googleUser._json.sub
+        githubAccountId: oauthAccount.githubId,
+        googleAccountId: oauthAccount.googleId
       })
     }
     const token = createToken({ accountId: account.id })
