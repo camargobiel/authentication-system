@@ -7,9 +7,18 @@ import { env } from '@/env'
 import { createRefreshToken, createToken } from '@/utils'
 
 export class AuthenticationService {
+  private static instance: AuthenticationService
+
   constructor (
     private readonly accountsRepository: AccountsRepository
   ) {}
+
+  static getInstance (accountsRepository: AccountsRepository): AuthenticationService {
+    if (AuthenticationService.instance === undefined) {
+      AuthenticationService.instance = new AuthenticationService(accountsRepository)
+    }
+    return AuthenticationService.instance
+  }
 
   async authenticate ({ email, password }: AuthenticateParamsDTO): Promise<AuthenticateResponseDTO> {
     const account = await this.accountsRepository.findAccountByUniques({ email })
@@ -65,6 +74,7 @@ export class AuthenticationService {
         googleAccountId: oauthAccount.googleId
       })
     }
+    Reflect.deleteProperty(account, 'password')
     const token = createToken({ accountId: account.id })
     const refreshToken = createRefreshToken({ accountId: account.id })
     return {

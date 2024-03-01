@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest --runInBand",
     "test:e2e": "jest --watch --runInBand --testMatch=**/e2e/*.test.ts",
-    "dev": "nodemon --watch"
+    "dev": "nodemon --watch",
+    "test:all:watch": "jest --watch --runInBand",
+    "test:coverage": "jest --runInBand --coverage"
   },
   "prisma": {
     "schema": "./src/infra/prisma/schema.prisma"

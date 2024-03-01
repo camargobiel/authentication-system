@@ -21,7 +21,8 @@ describe('Authentication e2e suites', () => {
           email: 'geosumel@zugudsew.fk',
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
-          googleId: null
+          googleId: null,
+          githubId: null
         }
       })
     })

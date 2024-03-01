@@ -5,7 +5,7 @@ import prisma from '../prisma'
 
 export const makeAuthenticationController = (): AuthenticationController => {
   const authenticationController = new AuthenticationController(
-    new AuthenticationService(new AccountsRepository(prisma))
+    AuthenticationService?.getInstance(new AccountsRepository(prisma))
   )
   return authenticationController
 }

@@ -16,7 +16,13 @@ export const seedDatabase = async (): Promise<void> => {
             id: 'd35378b5-8ee1-4537-93ce-064586f6a456',
             name: 'Loretta Rivera',
             email: 'zezucu@wajim.sb',
-            password: 'jWP5nQdt8jQz'
+            password: hashSync('jWP5nQdt8jQz', 10)
+          },
+          {
+            id: 'd72b46e1-2164-4d93-9b5e-b30ae5692ed6',
+            name: 'Shawn Carpenter',
+            email: 'utfoida@gob.mv',
+            password: null
           }
         ]
       }),
